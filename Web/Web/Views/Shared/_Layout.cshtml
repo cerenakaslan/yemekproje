@@ -1,0 +1,247 @@
+﻿<html lang="en" data-bs-theme="auto">
+<head>
+    <script src="/assets/js/color-modes.js"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.111.3">
+    <title>@ViewBag.Title - Kitcho| Malzemelerinizi Seçin, Tarifinizi Bulun</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/dashboard/">
+
+    <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/dist/css/mystylesheet.css" rel="stylesheet">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @@media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .b-example-divider {
+            width: 100%;
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+            .nav-scroller .nav {
+                display: flex;
+                flex-wrap: nowrap;
+                padding-bottom: 1rem;
+                margin-top: -1px;
+                overflow-x: auto;
+                text-align: center;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+
+        .btn-bd-primary {
+            --bd-violet-bg: #712cf9;
+            --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+            --bs-btn-font-weight: 600;
+            --bs-btn-color: var(--bs-white);
+            --bs-btn-bg: var(--bd-violet-bg);
+            --bs-btn-border-color: var(--bd-violet-bg);
+            --bs-btn-hover-color: var(--bs-white);
+            --bs-btn-hover-bg: #6528e0;
+            --bs-btn-hover-border-color: #6528e0;
+            --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+            --bs-btn-active-color: var(--bs-btn-hover-color);
+            --bs-btn-active-bg: #5a23c8;
+            --bs-btn-active-border-color: #5a23c8;
+        }
+
+        .bd-mode-toggle {
+            z-index: 1500;
+        }
+
+        .logo-icon {
+            float: right;
+            display: block;
+            background: #ffffff;
+            padding: 4px;
+            width: 165px;
+            /82 buydu aşağıdaki 40 dı/ height:75px;
+            border-radius: 7px;
+            margin-left: auto;
+            margin-right: -95px;
+        }
+
+        .logo-title {
+            float: left;
+            display: block;
+            margin-top: .1em;
+            margin-bottom: 0 !important;
+        }
+
+        .pr-0 {
+            padding-right: 0 !important;
+        }
+
+        .pl-0 {
+            padding-left: 0 !important;
+        }
+
+        .navbar-nav {
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+    </style>
+
+
+    <!-- Custom styles for this template -->
+    <link href="/assets/dist/dashboard/dashboard.css" rel="stylesheet">
+    <link href="~/assets/dist/blog/blog.css" rel="stylesheet" />
+
+    @RenderSection("Style", required: false)
+</head>
+<body>
+
+    <header class="navbar navbar sticky-top bg flex-md-nowrap p-0">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="@Url.Action("Index")">
+            <div class="row">
+                <div class="col-lg-3 pr-0">
+                    <img class="logo-icon" src="/images/resimkitcholast.png" alt="" width="20">
+                </div>
+                <div class="col-lg-9">
+                </div>
+            </div>
+
+        </a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-body-tertiary sidebar collapse">
+                <div class="position-sticky pt-3 sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="@Url.Action("Index")">
+                                <img src="/images/homeimage.png" alt="Ana Sayfa" width="33" height="33">
+                                Ana Sayfa
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("FavoriteFoods")">
+                                <img src="/images/favoritesimage.png" alt="Favori Yemeklerim" width="33" height="33">
+                                Favori Yemeklerim
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("FoodBook")">
+                                <img src="/images/recipesbookimage.png" alt="Tariflerim" width="33" height="33">
+                                Tariflerim
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("DetailedSearch")">
+                                <img src="/images/searchimage.png" alt="Detaylı Yemek Ara" width="33" height="33">
+                                Malzemelerle Ara
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Profile")">
+                                <img src="/images/userimage.png" alt="Profil" width="33" height="33">
+                                Profil
+                            </a>
+                        </li>
+
+                        <li class="nav-item" style="position: absolute;bottom:50px;">
+                            <a class="nav-link" href="@Url.Action("Logout")">
+                                <img src="/images/Frame46.png" alt="Çıkış" width="33" height="33">
+                                Çıkış
+                            </a>
+                        </li>
+
+                    </ul>
+
+
+                </div>
+            </nav>
+
+            @RenderBody()
+
+        </div>
+    </div>
+
+
+
+    <script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js" integrity="sha384-gdQErvCNWvHQZj6XZM0dNsAoY4v+j5P1XDpNkcM3HJG1Yx04ecqIHk7+4VBOCHOG" crossorigin="anonymous"></script>
+    <script src="/assets/dist/dashboard/dashboard.js"></script>
+    @RenderSection("Scripts", required: false)
+    <script>
+        $("#myModal").on("click", function () {
+            $('#myModal').modal("hide");
+        });
+        $(".alert").on("click", function () {
+            $('.alert').hide();
+        });
+    </script>
+</body>
+</html>
+
+<style>
+
+    .sidebar .nav-link.active {
+        font-family: Calibri;
+        color: #173308;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .sidebar .nav-link {
+        font-family: Calibri;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .nav {
+        --bs-nav-link-padding-x: 1rem;
+        --bs-nav-link-padding-y: 0.5rem;
+        --bs-nav-link-color: red;
+        --bs-nav-link-hover-color: red;
+        --bs-nav-link-disabled-color: red;
+      
+    }
+
+</style>

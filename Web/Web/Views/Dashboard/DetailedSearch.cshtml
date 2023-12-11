@@ -1,0 +1,309 @@
+﻿@model dynamic
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "MALZEMELERLE ARA";
+}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+    <section id="forms">
+
+        @using (Html.BeginForm("DetailedSearch", "Dashboard", FormMethod.Post, new { id = "newFoodForm", enctype = "multipart/form-data" }))
+        {
+
+
+            <div class="row">
+                <article class="my-3 col-lg-8" id="overview">
+                    <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2" style="color:#173308;">
+                        <h3>Detaylı Yemek Arama</h3>
+                        <img src="/images/gıf.gif" alt="Hazırlama Süresi" width="150" height="110">
+                    </div>
+
+                    <div>
+                        <div class="bd-example-snippet bd-code-snippet">
+                            <div class="bd-example">
+                                <form>
+                                    <div class="row">
+                                        <div class="bd-heading align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2 col-lg-6" style="color:#173308;font-size:40px; padding-top:20px;font-family:Calibri;">
+                                            <h4>
+                                                Malzeme Ekle
+                                                <button type="button" class="btn btn-outline-success" style="border-radius:15%;" id="AddButton">
+                                                    <span data-feather="plus" class="align-text-bottom"></span>
+                                                </button>
+                                            </h4>
+
+                                            <div id="materialGroup">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="mb-3 mt-3">
+                                                            <label for="foodMaterialName" class="form-label" style="color:#173308;font-size:16px;font-weight:500;font-family:Calibri;">Malzeme Adı</label>
+                                                            @Html.TextBox("foodMaterialName", null, "", new{ @class="form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div id="container">
+                                                @if (Model.searchedMaterial != null)
+                                                {
+                                                    foreach (var item in Model.searchedMaterial)
+                                                    {
+                                                        if (Model.searchedMaterial[0] != item)
+                                                        {
+                                                            <div>
+                                                                <div class="row">
+                                                                    <div class="col-lg-12">
+                                                                        <div class="mb-3 mt-3">
+                                                                            <label for="foodMaterialName" class="form-label" style="color:#173308;font-size:15px;font-family:Calibri;">Malzeme Adı</label>
+                                                                            <input class="form-control" id="foodMaterialName" name="foodMaterialName" type="text" value="@item">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <input type="button" value="Kaldır" class="btn btn-danger" onclick="RemoveTextBox(this)">
+                                                            </div>
+                                                        }
+                                                    }
+                                                }
+                                            </div>
+
+                                            @if (Model.userId != null)
+                                            {
+                                                <div id="materialGroup">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="mb-3 mt-3">
+                                                                @Html.CheckBox("checkWS", false)
+                                                                <label for="checkWS">
+                                                                    <b style="font-size:23px;font-family:Calibri;font-weight:540;">Seçilen Malzemelerle Yeni Yemekler Ara!</b>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success add-new-recipe" onclick="showErrorMessage()">Ara</button>
+                                    <p style="visibility:hidden;">
+                                        Boşluk
+                                    </p>
+                                    <div class="alert alert-danger" style="display: none;font-family:Calibri;font-size:18px;font-weight:600;">
+                                        <strong>Yemekler Yükleniyor, Bekleyiniz</strong>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </article>
+            </div>
+        }
+
+        @{
+            if (ViewData.ModelState.IsValid && Context.Request.Method == "POST")
+            {
+                if (Model.foods != null)
+                {
+                    <div class="row mt-5" data-masonry='{"percentPosition": true }'>
+                        @foreach (var item in Model.foods)
+                        {
+                            <div class="col-sm-6 col-lg-3 mb-4">
+                                @if (item.Id != 0)
+                                {
+                                    <a href="@Url.Action("Food", "Dashboard", new{ id = item.Id })">
+                                        <div class="card" style="border-color:white;">
+                                            <img src="@item.FoodImage" class="bd-placeholder-img card-img-top" style="border-radius:8%; height:210px;" />
+                                            <div class="card-body text-center p-2" style="background-color: transparent;">
+                                                <h5 class="card-title" style="font-family:Calibri; color: #173308; font-size: 25px; font-weight:600; height:60px;">@item.FoodName</h5>
+                                            </div>
+                                        </div>
+                                    </a>
+
+                                    @if (item.FoodRecipe.Length > 150)
+                                    {
+                                        <div class="card-body" style="background-color: transparent; height:50px;">@item.FoodRecipe.Substring(0, 150)...</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="card-body" style="background-color: transparent; height:50px;">@item.FoodRecipe</div>
+                                    }
+
+                                    <div class="card-body mt-4" style="background-color: transparent;">
+                                        <img src="/images/hazırlamasüresi.png" alt="Hazırlama Süresi" width="22" height="22">
+                                        <span style="font-size:13px;">@item.FoodCookingTime @item.FoodCookingTimeText</span>
+                                    </div>
+
+                                    <a href="@Url.Action("Food", "Dashboard", new { id = item.Id })" class=" w-100 btn btn-lg mt-2" type="submit" style="padding:4px;border-radius:35px; background-color:#9fe870;color:#173308; font-size: 20px; font-weight:500; font-family:Calibri;">
+                                        Tarifi Oku
+                                    </a>
+
+                                }
+                                else
+                                {
+                                    <a href="#">
+                                        <div class="card" style="border-color:white;">
+                                            <img src="@item.FoodImage" class="bd-placeholder-img card-img-top" style="border-radius:8%;height:210px; " />
+                                            <div class="card-body text-center p-2" style="background-color: transparent;">
+                                                <h5 class="card-title" style="font-family:Calibri; color: #173308; font-size: 25px; font-weight:600;height:60px;">@item.FoodName</h5>
+                                            </div>
+                                        </div>
+                                    </a>
+
+                                    @if (item.FoodRecipe.Length > 150)
+                                    {
+                                        <div class="card-body" style="background-color: transparent; height:50px;">@item.FoodRecipe.Substring(0, 150)...</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="card-body" style="background-color: transparent; height:50px;">@item.FoodRecipe</div>
+                                    }
+
+                                    <div class="card-body mt-4" style="background-color: transparent;">
+                                        <img src="/images/hazırlamasüresi.png" alt="Hazırlama Süresi" width="22" height="22">
+                                        <span style="font-size:13px;">@item.FoodCookingTime @item.FoodCookingTimeText</span>
+                                    </div>
+
+                                    <a href="@Url.Action("Food", "Dashboard", new { id = item.Id })" class=" w-100 btn btn-lg mt-2" type="submit" style="padding:4px;border-radius:35px; background-color:#9fe870;color:#173308; font-size: 20px; font-weight:500; font-family:Calibri;">
+                                        Tarifi Oku
+                                    </a>
+
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        }
+
+    </section>
+
+</main>
+
+<script>
+    function showErrorMessage() {
+        document.querySelector('.alert.alert-danger').style.display = 'block';
+    }
+</script>
+
+
+@section Scripts{
+
+    <script>
+        $("#newFoodForm").on("submit", function (e) {
+            if ($("#foodMaterialName").val() == "") {
+
+                $(".alert").addClass("alert-danger");
+                $(".alert").html("Lütfen En Az Bir Malzeme Giriniz!");
+                $('#myModal').modal("show");
+                e.preventDefault();
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var i = 1;
+            $("#AddButton").click(function () {
+                var div = $("<div />");
+                var value = $("#materialGroup").html();
+
+                value = value.replace("materialName[0].Name", "materialName[" + i + "].Name");
+                value = value.replace("materialName[0].Count", "materialName[" + i + "].Count");
+
+                div.append(value);
+
+                var button = $("<input />").attr("type", "button").attr("value", "Kaldır").attr("class", "btn btn-danger");
+                button.attr("onclick", "RemoveTextBox(this)");
+                div.append(button);
+                $("#container").append(div);
+                i++;
+            });
+        });
+        function RemoveTextBox(button) {
+            $(button).parent().remove();
+        }
+    </script>
+
+    <style>
+        .btn-success {
+            --bs-btn-color: #173308;
+            --bs-btn-bg: #9fe870;
+            --bs-btn-border-color: #9fe870;
+            --bs-btn-hover-color: #173308;
+            --bs-btn-hover-bg: #9fe870;
+            --bs-btn-hover-border-color: #173308;
+            --bs-btn-focus-shadow-rgb: 49,132,253;
+            --bs-btn-active-color: #9fe870;
+            --bs-btn-active-bg: #9fe870;
+            --bs-btn-active-border-color: #9fe870;
+            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            --bs-btn-disabled-color: #9fe870;
+            --bs-btn-disabled-bg: #9fe870;
+            --bs-btn-disabled-border-color: #9fe870;
+        }
+
+        .btn-outline-success {
+            --bs-btn-color: #173308;
+            --bs-btn-bg: #9fe870;
+            --bs-btn-border-color: #9fe870;
+            --bs-btn-hover-color: #173308;
+            --bs-btn-hover-bg: #9fe870;
+            --bs-btn-hover-border-color: #173308;
+            --bs-btn-focus-shadow-rgb: 49,132,253;
+            --bs-btn-active-color: #9fe870;
+            --bs-btn-active-bg: #9fe870;
+            --bs-btn-active-border-color: #9fe870;
+            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            --bs-btn-disabled-color: #9fe870;
+            --bs-btn-disabled-bg: #9fe870;
+            --bs-btn-disabled-border-color: #9fe870;
+        }
+
+        .btn-lg {
+            --bs-btn-color: #9fe870;
+            --bs-btn-bg: #173308;
+            --bs-btn-border-color: #9fe870;
+            --bs-btn-hover-color: #173308;
+            --bs-btn-hover-bg: #9fe870;
+            --bs-btn-hover-border-color: #173308;
+            --bs-btn-focus-shadow-rgb: 49,132,253;
+            --bs-btn-active-color: #9fe870;
+            --bs-btn-active-bg: #9fe870;
+            --bs-btn-active-border-color: #9fe870;
+            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            --bs-btn-disabled-color: #9fe870;
+            --bs-btn-disabled-bg: #9fe870;
+            --bs-btn-disabled-border-color: #9fe870;
+        }
+
+        .card-body {
+            color: grey;
+            font-family: Calibri;
+        }
+
+        .h3, h3 {
+            font-size: 40px;
+            font-family: Calibri;
+            font-weight: 540;
+        }
+
+        .h4, h4 {
+            font-size: 30px;
+            font-family: Calibri;
+            font-weight: 540;
+        }
+
+        .alert-danger {
+            --bs-alert-color: #DA3E3E;
+            --bs-alert-bg: #F1CBCB;
+            --bs-alert-border-color: #F1CBCB;
+            --bs-alert-link-color: #edede;
+        }
+    </style>
+
+
+}

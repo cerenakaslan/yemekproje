@@ -1,0 +1,40 @@
+﻿/*My expressions for style*/
+
+/*.btn-success {
+    --bs-btn-color: #9fe870;
+    --bs-btn-bg: #173308;
+    --bs-btn-border-color: #9fe870;
+    --bs-btn-hover-color: #9fe870;
+    --bs-btn-hover-bg: #9fe870;
+    --bs-btn-hover-border-color: #173308;
+    --bs-btn-focus-shadow-rgb: 49,132,253;
+    --bs-btn-active-color: #9fe870;
+    --bs-btn-active-bg: #9fe870;
+    --bs-btn-active-border-color: #9fe870;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #9fe870;
+    --bs-btn-disabled-bg: #9fe870;
+    --bs-btn-disabled-border-color: #9fe870;
+} 
+
+.btn-outline-success {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #9fe870;
+    --bs-btn-border-color: #9fe870;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #173308;
+    --bs-btn-hover-border-color: #9fe870;
+    --bs-btn-focus-shadow-rgb: 60,153,110;
+    --bs-btn-active-color: #9fe870;
+    --bs-btn-active-bg: #9fe870;
+    --bs-btn-active-border-color: #9fe870;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #9fe870;
+    --bs-btn-disabled-bg: #9fe870;
+    --bs-btn-disabled-border-color: #9fe870;
+    --bs-gradient: none;
+}*/
+
+a:link{
+    text-decoration:none;
+}

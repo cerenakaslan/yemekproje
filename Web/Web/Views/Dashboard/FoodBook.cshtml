@@ -1,0 +1,139 @@
+﻿@using Web.Models.Database
+@model List<Foods>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "TARİFLERİM";
+}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    @using (Html.BeginForm("FoodBook", "Dashboard", FormMethod.Post))
+    {
+        <div class="input-group">
+            <div class="form-outline" style="height:55px;width:695px;">
+                <input name="searchFood" id="searchFood" type="search" class="form-control" placeholder="Yemek Ara" />
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="background-color:#9fe870; width:60px;height:40px;">
+                <img src="/images/searchimage.png" width="22" height="22">
+            </button>
+        </div>
+
+        <a href="@Url.Action("NewFood", "Dashboard")" type="button" class="btn btn-outline-success mt-4" style="border-color: #173308; font-size: 1.2rem;">
+            <span data-feather="plus" class="align-text-bottom"></span>
+            Kendi Tarifini Ekle
+        </a>
+        <div class="row mt-5" data-masonry='{"percentPosition": true }'>
+            @foreach (var item in Model)
+            {
+                <div class="col-sm-6 col-lg-3 mb-4">
+                    <input name="foodId" id="foodId" style="visibility:hidden" value="@item.Id" />
+
+                    <form style="margin:0px;">
+                        <a href="@Url.Action("Food", "Dashboard", new{ id = item.Id })">
+                            <div class="card" style="border-color:white;">
+                                <img src="@item.FoodImage" class="bd-placeholder-img card-img-top " style="border-radius:8%; height:210px; " />
+                                <div class="card-body text-center p-2" style="background-color: transparent;">
+                                    <h5 class="card-title" style="font-family:Calibri; color: #173308; font-size: 25px; font-weight:600; height:60px;">@item.FoodName</h5>
+                                </div>
+                            </div>
+                        </a>
+                    </form>
+
+                    @if (item.FoodRecipe.Length > 150)
+                    {
+                        <div class="card-body" style="background-color: transparent; height:50px;">@item.FoodRecipe.Substring(0, 150)...</div>
+                    }
+                    else
+                    {
+                        <div class="card-body" style="background-color: transparent; height:50px;">@item.FoodRecipe</div>
+                    }
+
+                    <div class="card-body mt-4" style="background-color: transparent;">
+                        <img src="/images/hazırlamasüresi.png" alt="Hazırlama Süresi" width="22" height="22">
+                        <span style="font-size:13px;">@item.FoodCookingTime @item.FoodCookingTimeText</span>
+                    </div>
+
+                    <a href="@Url.Action("Food", "Dashboard", new { id = item.Id })" class="btn btn-primary w-100 btn btn-lg mt-2" style="padding:4px;border-radius:35px; background-color:#9fe870;color:#173308; font-size: 20px; font-weight:500; font-family:Calibri;">
+                        Tarifi Oku
+                    </a>
+
+                    <form method="post" action="@Url.Action("DeleteFood", "Dashboard", new { id = item.Id })">
+                        <button class=" btn btn-danger mt-2" type="submit" style="padding: 4px; border-radius: 35px; font-size: 20px; font-weight: 500; font-family: Calibri; width:85px;" onclick="showErrorMessage()"> Tarifi Sil </button>
+                    </form>
+
+
+
+                </div>
+            }
+
+            @if (Model.Count == 0)
+            {
+                <div class="col-sm-12 col-lg-6 mb-6" style="width:1100px; height:780px;">
+                    <img src="/images/1100pxfoodnotfound.png">
+                </div>
+            }
+
+        </div>
+    }
+</main>
+
+
+
+<style>
+    .btn-lg {
+        --bs-btn-color: #9fe870;
+        --bs-btn-bg: #173308;
+        --bs-btn-border-color: #9fe870;
+        --bs-btn-hover-color: #173308;
+        --bs-btn-hover-bg: #9fe870;
+        --bs-btn-hover-border-color: #173308;
+        --bs-btn-focus-shadow-rgb: 49,132,253;
+        --bs-btn-active-color: #9fe870;
+        --bs-btn-active-bg: #9fe870;
+        --bs-btn-active-border-color: #9fe870;
+        --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+        --bs-btn-disabled-color: #9fe870;
+        --bs-btn-disabled-bg: #9fe870;
+        --bs-btn-disabled-border-color: #9fe870;
+    }
+
+
+    .card-body {
+        color: grey;
+        font-family: Calibri;
+    }
+
+    .btn-outline-success {
+        --bs-btn-color: #173308;
+        --bs-btn-bg: #fff;
+        --bs-btn-border-color: #173308;
+        --bs-btn-hover-color: #fff;
+        --bs-btn-hover-bg: #173308;
+        --bs-btn-hover-border-color: #173308;
+        --bs-btn-focus-shadow-rgb: 60,153,110;
+        --bs-btn-active-color: #173308;
+        --bs-btn-active-bg: #173308;
+        --bs-btn-active-border-color: #173308;
+        --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+        --bs-btn-disabled-color: #173308;
+        --bs-btn-disabled-bg: #173308;
+        --bs-btn-disabled-border-color: #173308;
+        --bs-gradient: none;
+    }
+
+    .btn-danger {
+        --bs-btn-color: #9fe870;
+        --bs-btn-bg: #173308;
+        --bs-btn-border-color: #173308;
+        --bs-btn-hover-color: #173308;
+        --bs-btn-hover-bg: red;
+        --bs-btn-hover-border-color: red;
+        --bs-btn-focus-shadow-rgb: 49,132,253;
+        --bs-btn-active-color: #9fe870;
+        --bs-btn-active-bg: #9fe870;
+        --bs-btn-active-border-color: #9fe870;
+        --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+        --bs-btn-disabled-color: #9fe870;
+        --bs-btn-disabled-bg: #9fe870;
+        --bs-btn-disabled-border-color: #9fe870;
+    }
+</style>

@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\Database\Context\MyFoods.cs" />
+    <Compile Remove="Models\Database\MyFoods.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Dashboard\test.cshtml" />
+    <Content Remove="Views\Home\Girişsayfası.cshtml" />
+    <Content Remove="wwwroot\images\cooking.png" />
+    <Content Remove="wwwroot\images\favimage.png" />
+    <Content Remove="wwwroot\images\foodnotfound2.jpeg" />
+    <Content Remove="wwwroot\images\layoutresmi.png" />
+    <Content Remove="wwwroot\images\resimeklemegörseli.png" />
+    <Content Remove="wwwroot\images\resimkitcho.png" />
+    <Content Remove="wwwroot\images\sign out.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AngleSharp" Version="1.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.15">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.15">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

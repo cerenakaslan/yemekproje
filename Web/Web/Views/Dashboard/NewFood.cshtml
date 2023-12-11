@@ -1,0 +1,309 @@
+﻿@model dynamic
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "YEMEK EKLE";
+    
+}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+    <section id="forms">
+
+        @using (Html.BeginForm("NewFood", "Dashboard", FormMethod.Post, new { id = "newFoodForm", enctype = "multipart/form-data" }))
+        {
+            <div class="row">
+                <article class="my-3 col-lg-8" id="overview">
+                    <div class="bd-heading align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+                        <div class="alert alert-danger" style="display: none;font-family:Calibri; font-size:18px;font-weight:600;">
+                            <strong>Danger!</strong>
+                            <p style="visibility:hidden;">
+                                Boşluk
+                            </p>
+                        </div>
+                        <h3>Yemek Tarifi Ekle</h3>
+                    </div>
+
+                    <div>
+                        <div class="bd-example-snippet bd-code-snippet">
+                            <div class="bd-example">
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="foodName" class="form-label">Yemeğin Adı</label>
+                                        @Html.TextBox("foodName", null, "", new { @class = "form-control" })
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-1">
+                                            <span data-feather="users" class="align-text-bottom mt-2" style="width:20px; height:20px; float:right;"></span>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <div class="mb-3">
+                                                @Html.TextBox("foodCountForPeople", null, "", new{ @class="form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <div class="mb-3">
+                                                @Html.TextBox("foodCountForPeopleText", "Kişilik", "", new{ @class="form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-1">
+                                            <img src="/images/preparing.png" class="align-text-bottom mt-2" style="width:25px; height:25px; float:right;">
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <div class="mb-3">
+                                                @Html.TextBox("foodPreparingTime", null, "", new{ @class="form-control"})
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <div class="mb-3">
+                                                @Html.DropDownList("foodPreparingTimeText", new SelectList( new List<string>(){"Dakika","Saat"}), new{ @class="form-control"})
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-1">
+                                            <img src="/images/cooking2.png" class="align-text-bottom mt-2" style="width:25px; height:25px; float:right;">
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <div class="mb-3">
+                                                @Html.TextBox("foodCookingTime", null, "", new{ @class="form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <div class="mb-3">
+                                                @Html.DropDownList("foodCookingTimeText", new SelectList( new List<string>(){"Dakika","Saat"}), new{ @class="form-control"})
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2 col-lg-6">
+                                            <h4>
+                                                Malzemeler
+                                                <button type="button" class="btn btn-outline-success" id="AddButton">
+                                                    <span data-feather="plus" class="align-text-bottom"></span>
+                                                </button>
+                                            </h4>
+
+                                            <div id="materialGroup">
+                                                <div class="row">
+                                                    <div class="col-lg-5">
+                                                        <div class="mb-3 mt-3">
+                                                            <label for="materialName[0].Name" class="form-label">Malzeme Adı</label>
+                                                            @Html.TextBox("foodMaterialName", null, "", new{ @class="form-control" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3 mt-3">
+                                                            <label for="materialName[0].Count" class="form-label">Malzeme Miktarı</label>
+                                                            @Html.TextBox("foodMaterialCount", null, "", new{ @class="form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div id="container">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2 col-lg-12">
+                                            <h4>
+                                                Tarif Detayı
+                                            </h4>
+
+                                            @Html.TextArea("foodRecipe", new{ @class="form-control mt-5" })
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-success add-new-recipe" onclick="showErrorMessage()">Ekle</button>                              
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </article>
+                <div class="col-lg-4 mt-5">
+
+                    <div class="col-lg-12 mb-3">
+                        <div id="divImageMediaPreview">
+                            <img src="/images/resimeklemeyeşil.png" style="width:33em;" />
+                        </div>
+                    </div>
+                    <div class="col-lg-10 mt-5">
+                        <label class="form-label" for="foodImage">Yemeğin Resmi</label>
+                        @Html.TextBox("foodImage",null,"", new { type = "file", @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+            
+        }
+
+    </section>
+
+</main>
+
+
+<script>
+    function showErrorMessage() {
+        document.querySelector('.alert.alert-danger').style.display = 'block';
+    }
+</script>
+
+
+@section Scripts{
+    <script>
+        $("#newFoodForm").on("submit", function (e) {
+
+
+            if ($("#foodImage").val() == "") {
+                $(".alert").addClass("alert-danger");
+                $(".alert").html("Fotoğraf yüklemelisiniz!");
+                $('#myModal').modal("show");
+                e.preventDefault();
+            }
+            if ($("#foodRecipe").val() == "") {
+                $(".alert").addClass("alert-danger");
+                $(".alert").html("Tarif detayını yazmalısınız!");
+                $('#myModal').modal("show");
+                e.preventDefault();
+            }
+            if ($("#foodMaterialCount").val() == "") {
+                $(".alert").addClass("alert-danger");
+                $(".alert").html("Tarif için gerekli olan malzemelerin miktarını girmelisiniz!");
+                $('#myModal').modal("show");
+                e.preventDefault();
+            }
+            if ($("#foodMaterialName").val() == "") {
+                $(".alert").addClass("alert-danger");
+                $(".alert").html("Tarif için gerekli olan malzemeleri girmelisiniz!");
+                $('#myModal').modal("show");
+                e.preventDefault();
+            }
+            if ($("#foodCookingTime").val() == "") {
+                $(".alert").addClass("alert-danger");
+                $(".alert").html("Yemeğin pişmesi için gerekli olan süreyi girmelisiniz!");
+                $('#myModal').modal("show");
+                e.preventDefault();
+            }
+            if ($("#foodPreparingTime").val() == "") {
+                $(".alert").addClass("alert-danger");
+                $(".alert").html("Tarifi hazırlamak için gerekli olan süreyi girmelisiniz!");
+                $('#myModal').modal("show");
+                e.preventDefault();
+            }
+            if ($("#foodCountForPeople").val() == "") {
+                $(".alert").addClass("alert-danger");
+                $(".alert").html("Yemeğin kaç kişilik olacağını belirtmelisiniz!");
+                $('#myModal').modal("show");
+                e.preventDefault();
+            }
+            if ($("#foodName").val() == "") {
+                $(".alert").addClass("alert-danger");
+                $(".alert").html("Yemek Adı girmelisiniz!");
+                $('#myModal').modal("show");
+                e.preventDefault();
+            }              
+            
+        });
+
+
+        $("#foodImage").change(function () {
+            if (typeof (FileReader) != "undefined") {
+                var dvPreview = $("#divImageMediaPreview");
+                dvPreview.html("");
+                $($(this)[0].files).each(function () {
+                    var file = $(this);
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        if (e.target.result.indexOf("video") == -1) {
+                            var img = $("<img />");
+                            img.attr("style", "max-width:33em; padding: 10px");
+                            img.attr("src", e.target.result);
+                            dvPreview.append(img);
+                        }
+                    }
+                    reader.readAsDataURL(file[0]);
+                });
+            } else {
+                alert("This browser does not support HTML5 FileReader.");
+            }
+
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var i = 1;
+            $("#AddButton").click(function () {
+                var div = $("<div />");
+                var value = $("#materialGroup").html();
+
+                value = value.replace("materialName[0].Name", "materialName[" + i + "].Name");
+                value = value.replace("materialName[0].Count", "materialName[" + i + "].Count");
+
+                div.append(value);
+
+                var button = $("<input />").attr("type", "button").attr("value", "Kaldır").attr("class", "btn btn-danger");
+                button.attr("onclick", "RemoveTextBox(this)");
+                div.append(button);
+                $("#container").append(div);
+                i++;
+            });
+        });
+        function RemoveTextBox(button) {
+            $(button).parent().remove();
+        }
+    </script>
+}
+
+
+<style>
+    .btn-success {
+        --bs-btn-color: #173308;
+        --bs-btn-bg: #9fe870;
+        --bs-btn-border-color: #9fe870;
+        --bs-btn-hover-color: #173308;
+        --bs-btn-hover-bg: #9fe870;
+        --bs-btn-hover-border-color: #173308;
+        --bs-btn-focus-shadow-rgb: 49,132,253;
+        --bs-btn-active-color: #9fe870;
+        --bs-btn-active-bg: #9fe870;
+        --bs-btn-active-border-color: #9fe870;
+        --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+        --bs-btn-disabled-color: #9fe870;
+        --bs-btn-disabled-bg: #9fe870;
+        --bs-btn-disabled-border-color: #9fe870;
+    }
+
+    .btn-outline-success {
+        --bs-btn-color: #173308;
+        --bs-btn-bg: #9fe870;
+        --bs-btn-border-color: #9fe870;
+        --bs-btn-hover-color: #173308;
+        --bs-btn-hover-bg: #9fe870;
+        --bs-btn-hover-border-color: #173308;
+        --bs-btn-focus-shadow-rgb: 49,132,253;
+        --bs-btn-active-color: #9fe870;
+        --bs-btn-active-bg: #9fe870;
+        --bs-btn-active-border-color: #9fe870;
+        --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+        --bs-btn-disabled-color: #9fe870;
+        --bs-btn-disabled-bg: #9fe870;
+        --bs-btn-disabled-border-color: #9fe870;
+    }
+
+    .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+        color: #173308;
+    }
+
+    .alert-danger {
+        --bs-alert-color: #DA3E3E;
+        --bs-alert-bg: #F1CBCB;
+        --bs-alert-border-color: #F1CBCB;
+        --bs-alert-link-color: #edede;
+    }
+
+</style>

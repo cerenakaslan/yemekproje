@@ -1,0 +1,111 @@
+﻿@model dynamic
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "PROFİL";
+}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+    <section id="forms">
+
+        @using (Html.BeginForm("Profile", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="row">
+                <article class="my-3 col-lg-8" id="overview">
+                    <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2" style="padding-bottom:15px;"> 
+                        <h3 style="color:#173308; font-size:40px; font-weight:600;font-family:Calibri;">Profili Düzenle</h3>
+                    </div>
+
+                    <div>
+                        <div class="bd-example-snippet bd-code-snippet">
+                            <div class="bd-example" styşe="font-family:Calibri;">
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="firstName" class="form-label" style=" color: #173308; font-size:20px; font-weight:500;">Adınız</label>
+                                        @Html.TextBox("firstName", (string)Model.user.Firstname, "", new { @class = "form-control" })
+                                    </div> 
+                                    <div class="mb-3">
+                                        <label for="lastName" class="form-label" style=" color: #173308; font-size:20px; font-weight:500;">Soyadınız</label>
+                                        @Html.TextBox("lastName", (string)Model.user.Lastname, "", new { @class = "form-control" })
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label" style=" color: #173308; font-size:20px; font-weight:500;">E-posta Adresiniz</label>
+                                        @Html.TextBox("email", (string)Model.user.Email, "", new { @class = "form-control" })
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label" style=" color: #173308; font-size:20px; font-weight:500;">Şifreniz</label>
+                                        @Html.TextBox("password", null, "", new { @class = "form-control", type = "password" })
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success" style=" font-size:20px; font-weight:500;position: relative; ">
+                                        Kaydet                                       
+                                    </button>
+                                    
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </article>
+                <div class="col-lg-4 mt-5">
+
+                    <div class="col-lg-12 mb-3">
+                        <div id="divImageMediaPreview">
+                            <img src="/images/@Model.user.ProfileImage" style="max-width:25em;" />
+                        </div>
+                    </div>
+                    <div class="col-lg-10 mt-5">
+                        <label class="form-label" for="profileImage" style=" color: #173308; font-size:20px; font-weight:500;font-family:Calibri;">Profil Resmi</label>
+                        @Html.TextBox("profileImage",null,"", new { type = "file", @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+        }
+
+    </section>
+
+</main>
+
+@section Scripts{
+    <script>
+        $("#foodImage").change(function () {
+            if (typeof (FileReader) != "undefined") {
+                var dvPreview = $("#divImageMediaPreview");
+                dvPreview.html("");
+                $($(this)[0].files).each(function () {
+                    var file = $(this);
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        if (e.target.result.indexOf("video") == -1) {
+                            var img = $("<img />");
+                            img.attr("style", "max-width:25em; padding: 10px");
+                            img.attr("src", e.target.result);
+                            dvPreview.append(img);
+                        }
+                    }
+                    reader.readAsDataURL(file[0]);
+                });
+            } else {
+                alert("This browser does not support HTML5 FileReader.");
+            }
+        });
+    </script>
+
+}
+<style>
+    .btn-success {
+        --bs-btn-color: #173308;
+        --bs-btn-bg: #9fe870;
+        --bs-btn-border-color: #9fe870;
+        --bs-btn-hover-color: #173308;
+        --bs-btn-hover-bg: #9fe870;
+        --bs-btn-hover-border-color: #173308;
+        --bs-btn-focus-shadow-rgb: 49,132,253;
+        --bs-btn-active-color: #9fe870;
+        --bs-btn-active-bg: #9fe870;
+        --bs-btn-active-border-color: #9fe870;
+        --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+        --bs-btn-disabled-color: #9fe870;
+        --bs-btn-disabled-bg: #9fe870;
+        --bs-btn-disabled-border-color: #9fe870;
+    }
+</style>

@@ -1,0 +1,153 @@
+﻿@using Web.Models.Database
+@using Web.Models.Database.Context;
+@model dynamic
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "YEMEK DETAYI";
+    DatabaseContext dbContext = Model.dbContext;
+    int foodId = (int)Model.Food.Id;
+    int userId = Convert.ToInt32(Model.userId);
+    var like = dbContext.FavoriteFoods.FirstOrDefault(x => x.FoodId == foodId && x.UserId == userId);
+    bool isLiked = false;
+    if (like != null)
+    {
+        isLiked = true;
+    }
+}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="row g-5 mt-0">
+        <div class="col-md-8">
+
+            <article class="blog-post">
+               
+                <h2 class="blog-post-title mb-1" style="color:#173308;font-family:Calibri; font-weight:600; font-size:50px;">
+                    @Model.Food.FoodName
+                    <a href="@Url.Action("LikeFood", "Dashboard", new{ id = foodId })" type="button" class="btn @if(isLiked == true){ @Html.Raw("btn-danger") }else{ @Html.Raw("btn-outline-danger") } "style="position: relative; margin-bottom:8px; " >
+                        <img src="/images/favoritesimage.png" alt="Favori Yemek" width="35" height="35">                       
+                    </a>
+                    <div> <img src="@Model.Food.FoodImage" width="650" /></div>
+                    
+                </h2>                
+             
+                <div id="yemekbilgileri" style="color:#173308;font-family:Calibri; font-weight:200; font-size:15px;">
+                    <div class="row">
+                        <div class="col-lg-3 ">
+                            <div class="mb-3 mt-3">
+                                <img src="/images/kaçkişilik.png" alt="Kaç Kişilik" width="35" height="35" style="margin-left:15px;">
+                                <p style ="text-decoration:underline;">Kaç Kişilik</p>
+                                <p style="margin-top: -7px;margin-left:5px;">@Model.Food.FoodCountForPeople Kişilik</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-3 mt-3">
+                                <img src="/images/hazırlamasüresi.png" alt="Hazırlama Süresi" width="35" height="35" style="margin-left:30px;">
+                                <p style="text-decoration:underline;">Hazırlama Süresi</p>
+                                <p style="margin-top: -7px;margin-left:15px;">@Model.Food.FoodPreparingTime Dakika</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-3 mt-3">
+                                <img src="/images/pişirmesüresi.png" alt="Pişirme Süresi" width="35" height="35" style="margin-left:25px;">
+                                <p style ="text-decoration:underline;">Pişirme Süresi</p>
+                                <p style="margin-top: -7px;margin-left:10px;">@Model.Food.FoodCookingTime Dakika</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <h3 style="color:#173308; font-size:25px;font-family:Calibri; font-weight:600;">
+                        <img src="/images/loginimage.png" width="15" height="15">
+                        Kullanılan Malzemeler
+                    </h3>
+               
+                
+
+                @{
+                    var materials = dbContext.FoodMaterials.Where(x => x.FoodId == foodId).ToList();
+                    <ul>
+                        @foreach (var item in materials)
+                        {
+                            var materialItem  = @dbContext.Materials.FirstOrDefault(x => x.Id == item.MaterialId);
+                            if (item?.MaterialCount == materialItem?.MaterialName)
+                            {
+                                <li>@materialItem.MaterialName</li>
+                            }
+                            else
+                            {
+                                <li>@item.MaterialCount @materialItem.MaterialName</li>
+                            }
+
+                        }
+                    </ul>
+                }
+
+                <h4 style="color:#173308; font-size:25px;font-family:Calibri; font-weight:600;">
+                    <img src="/images/loginimage.png" width="15" height="15">
+                    Yapılışı
+                </h4>
+                @Html.Raw(Model.Food.FoodRecipe)
+                
+               
+            </article>
+
+        </div>
+
+    </div>
+</main>
+
+<style>
+    .btn-danger {
+        --bs-btn-color: #173308;
+        --bs-btn-bg: #9fe870;
+        --bs-btn-border-color: #9fe870;
+        --bs-btn-hover-color: #173308;
+        --bs-btn-hover-bg: #9fe870;
+        --bs-btn-hover-border-color: #173308;
+        --bs-btn-focus-shadow-rgb: 49,132,253;
+        --bs-btn-active-color: #9fe870;
+        --bs-btn-active-bg: #9fe870;
+        --bs-btn-active-border-color: #9fe870;
+        --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+        --bs-btn-disabled-color: #9fe870;
+        --bs-btn-disabled-bg: #9fe870;
+        --bs-btn-disabled-border-color: #9fe870;
+    }
+
+    .btn-outline-danger {
+        --bs-btn-color: #173308;
+        --bs-btn-bg: transparent;
+        --bs-btn-border-color: #9fe870;
+        --bs-btn-hover-color: #173308;
+        --bs-btn-hover-bg: #9fe870;
+        --bs-btn-hover-border-color: #173308;
+        --bs-btn-focus-shadow-rgb: 49,132,253;
+        --bs-btn-active-color: #9fe870;
+        --bs-btn-active-bg: #9fe870;
+        --bs-btn-active-border-color: #9fe870;
+        --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+        --bs-btn-disabled-color: #9fe870;
+        --bs-btn-disabled-bg: #9fe870;
+        --bs-btn-disabled-border-color: #9fe870;
+    }
+  
+    .image-text-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .image-text {
+        display: flex;
+        align-items: center;
+    }
+
+    .image-text img {
+            margin-right: 10px;
+    }    
+
+    ::marker {
+        color: #9fe870;
+    }
+</style>
